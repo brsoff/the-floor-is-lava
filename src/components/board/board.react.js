@@ -10,13 +10,12 @@ import './board.css';
 export default class Board extends Component {
   static propTypes = {
     active: PropTypes.bool.isRequired,
+    activeBoardId: PropTypes.number.isRequired,
     activeSquare: PropTypes.number.isRequired,
     equivalentSquare: PropTypes.number,
     jump: PropTypes.number,
-    jumping: PropTypes.bool.isRequired,
     columns: PropTypes.number.isRequired,
     fall: PropTypes.number,
-    falling: PropTypes.bool.isRequired,
     id: PropTypes.number.isRequired,
     rows: PropTypes.number.isRequired,
     player: PropTypes.node
@@ -24,11 +23,11 @@ export default class Board extends Component {
 
   componentDidUpdate(oldProps) {
     if (!oldProps.active && this.props.active) {
+      const {id, activeBoardId} = this.props;
       const el = ReactDOM.findDOMNode(this);
       let duration = 0;
 
-      if (oldProps.falling) duration = FALL_DURATION_WAIT;
-      if (oldProps.jumping) duration = JUMP_DURATION_WAIT;
+      duration = id > activeBoardId ? FALL_DURATION_WAIT : JUMP_DURATION_WAIT;
 
       scrollTo(document.body, getCoords(el).top, duration);
     }

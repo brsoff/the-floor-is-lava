@@ -181,3 +181,7 @@ export function getSquareCoordsFromRows(rows, activeSquare) {
 
   return {top: top, left: left};
 }
+
+export function getPlayerCoords() {
+  return getCoords(document.getElementById('player'));
+}

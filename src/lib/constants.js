@@ -7,3 +7,5 @@ export const LEFT = 'ArrowLeft';
 export const RIGHT = 'ArrowRight';
 export const FALL_DURATION_WAIT = 900;
 export const JUMP_DURATION_WAIT = 700;
+export const FALL_KEY = 'f';
+export const JUMP_KEY = ' ';

@@ -3,7 +3,7 @@ import Component from './component.react';
 import Player from './player/player.react';
 import Board from './board/board.react';
 import initialState from '../lib/initial-state';
-import {FALL, JUMP} from '../lib/constants';
+import {FALL, JUMP, FALL_KEY, JUMP_KEY, FALL_DURATION_WAIT, JUMP_DURATION_WAIT} from '../lib/constants';
 import * as h from '../lib/helpers';
 import './app.css';
 
@@ -51,7 +51,7 @@ export default class App extends Component {
         isOnJump={isOnJump}
         isFalling={playerIsFalling}
         isJumping={playerIsJumping}
-        move={this.playerMove}
+        performAction={this.performAction}
         lastPlayerCoords={lastPlayerCoords}
         playerCoords={playerCoords}
         stopAction={this.stopAction} />
@@ -75,10 +75,9 @@ export default class App extends Component {
           return (
             <Board
               key={board.id}
+              activeBoardId={activeBoard}
               active={active}
               activeSquare={activeSquare}
-              falling={isOnFall}
-              jumping={isOnJump}
               equivalentSquare={equivalentSquare}
               player={includePlayer ? player : null}
               {...board} />
@@ -93,6 +92,17 @@ export default class App extends Component {
 
     const board = this.getActiveBoard();
     const activeSquare = this.state.activeSquare;
+
+    if (key === FALL_KEY) {
+      this.performAction(FALL, h.getPlayerCoords());
+      return;
+    }
+
+    if (key === JUMP_KEY) {
+      this.performAction(JUMP, h.getPlayerCoords());
+      return;
+    }
+
     const newSquare = h.getNewSquareIndex(key, board, activeSquare);
 
     if (newSquare !== null) {
@@ -107,7 +117,7 @@ export default class App extends Component {
   }
 
   isOnFall = () => {
-    return this.state.activeSquare === this.getActiveBoard().fall;
+    return this.getActiveBoard().falls.indexOf(this.state.activeSquare) > -1;
   }
 
   isOnJump = () => {
@@ -125,7 +135,7 @@ export default class App extends Component {
     });
   }
 
-  playerMove = (type, lastPlayerCoords) => {
+  performAction = (type, lastPlayerCoords) => {
     const {boards, activeSquare} = this.state;
     const activeBoard = this.getActiveBoard();
 
@@ -162,6 +172,12 @@ export default class App extends Component {
     } else {
       console.log('cant go down!');
     }
+
+    const duration = type === FALL ? FALL_DURATION_WAIT : JUMP_DURATION_WAIT;
+
+    setTimeout(() => {
+      this.stopAction(type);
+    }, duration);
   }
 
   stopAction = (type) => {

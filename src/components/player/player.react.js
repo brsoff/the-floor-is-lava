@@ -11,7 +11,7 @@ export default class Player extends Component {
     isOnFall: PropTypes.bool.isRequired,
     isOnJump: PropTypes.bool.isRequired,
     lastPlayerCoords: PropTypes.object.isRequired,
-    move: PropTypes.func.isRequired,
+    performAction: PropTypes.func.isRequired,
     playerCoords: PropTypes.object.isRequired,
     stopAction: PropTypes.func.isRequired
   };
@@ -72,7 +72,7 @@ export default class Player extends Component {
   }
 
   fall = (coords) => {
-    this.props.move(FALL, coords);
+    this.props.performAction(FALL, coords);
 
     // wait for fall animation to end
     setTimeout(() => {
@@ -81,7 +81,7 @@ export default class Player extends Component {
   }
 
   jump = (coords) => {
-    this.props.move(JUMP, coords);
+    this.props.performAction(JUMP, coords);
 
     setTimeout(() => {
       this.props.stopAction(JUMP);

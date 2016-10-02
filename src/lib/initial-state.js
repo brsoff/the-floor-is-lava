@@ -6,9 +6,9 @@ const initialState = {
   playerIsFalling: false,
   playerIsJumping: false,
   boards: [
-    {id: 1, columns: 12, rows: 12, fall: 98, jump: null},
-    {id: 2, columns: 14, rows: 14, fall: 150, jump: 109},
-    {id: 3, columns: 13, rows: 13, fall: null, jump: 80}
+    {id: 1, columns: 12, rows: 12, falls: []},
+    {id: 2, columns: 14, rows: 14, falls: []},
+    {id: 3, columns: 13, rows: 13, falls: []}
   ]
 };
 
