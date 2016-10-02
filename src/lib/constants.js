@@ -1,0 +1,9 @@
+export const FALL = 'FALL';
+export const JUMP = 'JUMP';
+export const SQUARE_SIDE = 30;
+export const UP = 'ArrowUp';
+export const DOWN = 'ArrowDown';
+export const LEFT = 'ArrowLeft';
+export const RIGHT = 'ArrowRight';
+export const FALL_DURATION_WAIT = 900;
+export const JUMP_DURATION_WAIT = 700;

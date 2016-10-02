@@ -1,0 +1,13 @@
+@import '../imports-variables.css';
+
+.square {
+  background-color: #fff;
+  border: 1px solid var(--bg-color);
+  display: inline-block;
+}
+
+.square.active { background-color: #D3D5D6; }
+
+.square.fall { background-color: var(--bg-color); }
+
+.square.jump { background-color: #FFC300; }

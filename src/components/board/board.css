@@ -1,0 +1,7 @@
+.board {
+  margin: 0 auto;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: perspective(1000px) translateZ(0) rotateX(50deg) rotateY(10deg);
+  z-index: 9998;
+}
