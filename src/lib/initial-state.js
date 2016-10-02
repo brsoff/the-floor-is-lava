@@ -1,6 +1,6 @@
 const initialState = {
   activeBoardId: 1,
-  activeSquareIndex: 0,
+  activeSquare: 1,
   playerCoords: {left: 0, top: 0},
   lastPlayerCoords: {left: 0, top: 0},
   playerIsFalling: false,

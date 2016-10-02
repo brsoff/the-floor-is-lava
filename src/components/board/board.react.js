@@ -41,7 +41,7 @@ export default class Board extends Component {
       return (
         <div className="row" key={row}>
           {Range(0, columns).map((col, colIndex) => {
-            const squareIndex = ((columns * row) + colIndex);
+            const squareIndex = ((columns * row) + colIndex) + 1;
             const isActive = active && squareIndex === activeSquare;
             const isFall = falls.indexOf(squareIndex) > -1;
             const isJump = squareIndex === jump;

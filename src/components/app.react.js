@@ -34,7 +34,7 @@ export default class App extends Component {
     const {
       boards,
       activeBoardId,
-      activeSquareIndex,
+      activeSquare,
       playerCoords,
       playerIsFalling,
       playerIsJumping,
@@ -69,7 +69,7 @@ export default class App extends Component {
           let equivalentSquare = null;
 
           if (!active) {
-            equivalentSquare = h.getEquivalentSquareOnNewBoard(activeSquareIndex, activeBoard, board);
+            equivalentSquare = h.getEquivalentSquareOnNewBoard(activeSquare, activeBoard, board);
           }
 
           return (
@@ -77,7 +77,7 @@ export default class App extends Component {
               key={board.id}
               activeBoardId={activeBoardId}
               active={active}
-              activeSquare={activeSquareIndex}
+              activeSquare={activeSquare}
               equivalentSquare={equivalentSquare}
               player={includePlayer ? player : null}
               {...board} />
@@ -91,7 +91,7 @@ export default class App extends Component {
     if (this.isTransitioningToNewBoard()) return;
 
     const board = this.getActiveBoard();
-    const activeSquareIndex = this.state.activeSquareIndex;
+    const activeSquare = this.state.activeSquare;
 
     if (key === FALL_KEY) {
       this.performAction(FALL, h.getPlayerCoords());
@@ -103,7 +103,7 @@ export default class App extends Component {
       return;
     }
 
-    const newSquare = h.getNewSquareIndex(key, board, activeSquareIndex);
+    const newSquare = h.getNewSquareIndex(key, board, activeSquare);
 
     if (newSquare !== null) {
       this.setNewSquare(board.id, newSquare, key);
@@ -117,11 +117,11 @@ export default class App extends Component {
   }
 
   isOnFall = () => {
-    return this.getActiveBoard().falls.indexOf(this.state.activeSquareIndex) > -1;
+    return this.getActiveBoard().falls.indexOf(this.state.activeSquare) > -1;
   }
 
   isOnJump = () => {
-    return this.state.activeSquareIndex === this.getActiveBoard().jump;
+    return this.state.activeSquare === this.getActiveBoard().jump;
   }
 
   setNewSquare = (boardId, newSquare, direction) => {
@@ -130,13 +130,13 @@ export default class App extends Component {
     coords = h.modifyCoordinates(coords, direction);
 
     this.setState({
-      activeSquareIndex: newSquare,
+      activeSquare: newSquare,
       playerCoords: coords
     });
   }
 
   performAction = (type, lastPlayerCoords) => {
-    const {boards, activeSquareIndex, activeBoardId} = this.state;
+    const {boards, activeSquare, activeBoardId} = this.state;
     const activeBoard = this.getActiveBoard();
 
     const newBoard = boards.find(board => {
@@ -151,7 +151,7 @@ export default class App extends Component {
     const newBoardId = newBoard.id;
 
     const equivalentSquare = h.getEquivalentSquareOnNewBoard(
-      activeSquareIndex,
+      activeSquare,
       activeBoard,
       newBoard
     );
@@ -160,7 +160,7 @@ export default class App extends Component {
 
       let state = {
         activeBoardId: newBoardId,
-        activeSquareIndex: equivalentSquare,
+        activeSquare: equivalentSquare,
         playerCoords: h.getSquareCoords(newBoardId, equivalentSquare),
         lastPlayerCoords: lastPlayerCoords
       };
@@ -170,7 +170,7 @@ export default class App extends Component {
         state.boards = h.addFallToBoard(
           this.state.boards,
           activeBoardId,
-          activeSquareIndex
+          activeSquare
         );
       }
 
@@ -189,12 +189,12 @@ export default class App extends Component {
   }
 
   stopAction = (type) => {
-    const {activeSquareIndex} = this.state;
+    const {activeSquare} = this.state;
 
     let state = {
       playerCoords: h.getCoordsFromSquarePositionRelativeToBoard(
         this.getActiveBoard().columns,
-        activeSquareIndex
+        activeSquare
       )
     };
 

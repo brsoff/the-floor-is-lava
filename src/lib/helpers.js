@@ -31,7 +31,7 @@ export function getEquivalentSquareOnNewBoard(activeSquare, currentBoard, newBoa
   const {rows, columns} = currentBoard;
   const newBoardRows = newBoard.rows;
   const newBoardColumns = newBoard.columns;
-  const square = activeSquare + 1; // account for 0 index
+  const square = activeSquare;
   const currentRow = Math.ceil(square / columns);
   const currentColumn = Math.abs(((currentRow * columns) - square) - columns);
   const equivalentColumn = getEquivalentRowOrColumn(currentColumn, columns, newBoardColumns);
@@ -39,7 +39,7 @@ export function getEquivalentSquareOnNewBoard(activeSquare, currentBoard, newBoa
 
   if (equivalentColumn && equivalentRow) {
     const equivalentSquare = (equivalentRow * newBoardColumns) -
-                             ((newBoardColumns - equivalentColumn) + 1);
+                             ((newBoardColumns - equivalentColumn));
     return equivalentSquare;
   } else {
     return null;
@@ -78,7 +78,9 @@ export function getNewSquareIndex(direction, board, activeSquare) {
 
 function left(board, activeSquare) {
   const {columns, rows} = board;
-  const leftIndices = Range(0, rows).map(b => b * columns);
+  const leftIndices = Range(0, rows).map(b => {
+    return (b * columns) + 1;
+  });
 
   if (!leftIndices.includes(activeSquare)) {
     return Math.abs(activeSquare - 1);
@@ -90,7 +92,7 @@ function left(board, activeSquare) {
 function right(board, activeSquare) {
   const {columns, rows} = board;
   const rightIndices = Range(0, rows).map((r, i) => {
-    return (columns + (columns * i) - 1);
+    return (columns + (columns * i));
   });
 
   if (!rightIndices.includes(activeSquare)) {
@@ -131,12 +133,18 @@ export function getSquareCoords(boardId, squareId) {
 
 export function getCoordsFromSquarePositionRelativeToBoard(columns, square) {
   const currentRow = Math.ceil(square / columns);
-  const currentColumn = Math.abs(((currentRow * columns) - square) - columns);
+  // let currentColumn = 0;
+
+  // if (currentRow * columns !== square) {
+    const currentColumn = Math.abs(((currentRow * columns) - square) - columns);
+  // }
 
   const coords = {
-    left: (currentColumn * SQUARE_SIDE),
+    left: (currentColumn - 1) * SQUARE_SIDE,
     top: (currentRow - 1) * SQUARE_SIDE
   };
+
+  console.log(coords);
 
   return coords;
 }
@@ -176,17 +184,6 @@ export function scrollTo(element, to, duration) {
     if (element.scrollTop === to) return;
     scrollTo(element, to, duration - 10);
   }, 10);
-}
-
-export function getSquareCoordsFromRows(rows, activeSquare) {
-  const square = activeSquare + 1;
-  const currentRow = Math.ceil(square / rows);
-  const offsetFromRight = Math.abs((currentRow * rows) - square);
-  const currentColumn = rows - offsetFromRight;
-  const top = (currentRow - 1) * SQUARE_SIDE;
-  const left = (currentColumn - 1) * SQUARE_SIDE;
-
-  return {top: top, left: left};
 }
 
 export function getPlayerCoords() {
