@@ -10,5 +10,6 @@
 .square.equivalent { background-color: #D3D5D6; }
 
 .square.fall { background-color: var(--bg-color); }
+.square.fall.equivalent { background-color: #DA3924; }
 
 .square.jump { background-color: #FFC300; }

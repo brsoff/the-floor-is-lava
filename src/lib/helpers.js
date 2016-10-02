@@ -1,6 +1,13 @@
 import {Range} from 'immutable';
 import {SQUARE_SIDE, LEFT, RIGHT, UP, DOWN} from './constants';
 
+export function addFallToBoard(boards, boardId, fallIndex) {
+  let boardToModify = boards[boardId - 1];
+  boardToModify.falls.push(fallIndex);
+
+  return boards;
+}
+
 export function modifyCoordinates(coords, direction) {
   switch (direction) {
   case LEFT:

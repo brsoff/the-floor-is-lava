@@ -165,7 +165,15 @@ export default class App extends Component {
         lastPlayerCoords: lastPlayerCoords
       };
 
-      if (type === FALL) state.playerIsFalling = true;
+      if (type === FALL) {
+        state.playerIsFalling = true;
+        state.boards = h.addFallToBoard(
+          this.state.boards,
+          activeBoardId,
+          activeSquareIndex
+        );
+      }
+
       if (type === JUMP) state.playerIsJumping = true;
 
       this.setState(state);
