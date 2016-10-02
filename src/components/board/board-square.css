@@ -6,7 +6,8 @@
   display: inline-block;
 }
 
-.square.active { background-color: #D3D5D6; }
+.square.active,
+.square.equivalent { background-color: #D3D5D6; }
 
 .square.fall { background-color: var(--bg-color); }
 

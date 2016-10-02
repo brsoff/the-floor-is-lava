@@ -9,17 +9,19 @@ export default class BoardSquare extends Component {
     width: PropTypes.number.isRequired,
     active: PropTypes.bool.isRequired,
     isJump: PropTypes.bool.isRequired,
-    isFall: PropTypes.bool.isRequired
+    isFall: PropTypes.bool.isRequired,
+    isEquivalent: PropTypes.bool.isRequired
   };
 
   render() {
-    const {id, height, width, active, isFall, isJump} = this.props;
+    const {id, height, width, active, isFall, isJump, isEquivalent} = this.props;
     const styles = {height: height, width: width};
     let classes = ['square'];
 
     if (active) classes.push('active');
     if (isFall) classes.push('fall');
     if (isJump) classes.push('jump');
+    if (isEquivalent) classes.push('equivalent');
 
     return <div id={id} className={classes.join(' ')} style={styles} />;
   }

@@ -11,6 +11,7 @@ export default class Board extends Component {
   static propTypes = {
     active: PropTypes.bool.isRequired,
     activeSquare: PropTypes.number.isRequired,
+    equivalentSquare: PropTypes.number,
     jump: PropTypes.number,
     jumping: PropTypes.bool.isRequired,
     columns: PropTypes.number.isRequired,
@@ -34,7 +35,7 @@ export default class Board extends Component {
   }
 
   render() {
-    const {id, rows, columns, activeSquare, active, fall, jump, player} = this.props;
+    const {id, rows, columns, activeSquare, active, fall, jump, player, equivalentSquare} = this.props;
     const styles = {width: columns * SQUARE_SIDE};
 
     const squares = Range(0, rows).map((row, rowIndex) => {
@@ -45,6 +46,7 @@ export default class Board extends Component {
             const isActive = active && squareIndex === activeSquare;
             const isFall = squareIndex === fall;
             const isJump = squareIndex === jump;
+            const isEquivalent = squareIndex === equivalentSquare;
 
             return (
               <BoardSquare
@@ -53,6 +55,7 @@ export default class Board extends Component {
                 id={`square-${id}-${squareIndex}`}
                 isFall={isFall}
                 isJump={isJump}
+                isEquivalent={isEquivalent}
                 key={col}
                 width={SQUARE_SIDE} />
             );

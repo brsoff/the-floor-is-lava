@@ -4,7 +4,7 @@ import Player from './player/player.react';
 import Board from './board/board.react';
 import initialState from '../lib/initial-state';
 import {FALL, JUMP} from '../lib/constants';
-import * as helpers from '../lib/helpers';
+import * as h from '../lib/helpers';
 import './app.css';
 
 export default class App extends Component {
@@ -41,6 +41,8 @@ export default class App extends Component {
       lastPlayerCoords
     } = this.state;
 
+
+    const activeBoardObj = this.getActiveBoard();
     const isOnFall = this.isOnFall();
     const isOnJump = this.isOnJump();
     const player = (
@@ -64,6 +66,12 @@ export default class App extends Component {
           const active = activeBoard === board.id;
           const includePlayer = (active && !playerIsFalling && !playerIsJumping);
 
+          let equivalentSquare = null;
+
+          if (!active) {
+            equivalentSquare = h.getEquivalentSquareOnNewBoard(activeSquare, activeBoardObj, board);
+          }
+
           return (
             <Board
               key={board.id}
@@ -71,6 +79,7 @@ export default class App extends Component {
               activeSquare={activeSquare}
               falling={isOnFall}
               jumping={isOnJump}
+              equivalentSquare={equivalentSquare}
               player={includePlayer ? player : null}
               {...board} />
           );
@@ -84,7 +93,7 @@ export default class App extends Component {
 
     const board = this.getActiveBoard();
     const activeSquare = this.state.activeSquare;
-    const newSquare = helpers.getNewSquareIndex(key, board, activeSquare);
+    const newSquare = h.getNewSquareIndex(key, board, activeSquare);
 
     if (newSquare !== null) {
       this.setNewSquare(board.id, newSquare, key);
@@ -108,7 +117,7 @@ export default class App extends Component {
   setNewSquare = (boardId, newSquare, direction) => {
     let coords = this.state.playerCoords;
 
-    coords = helpers.modifyCoordinates(coords, direction);
+    coords = h.modifyCoordinates(coords, direction);
 
     this.setState({
       activeSquare: newSquare,
@@ -131,7 +140,7 @@ export default class App extends Component {
 
     const newBoardId = newBoard.id;
 
-    const equivalentSquare = helpers.getEquivalentSquareOnNewBoard(
+    const equivalentSquare = h.getEquivalentSquareOnNewBoard(
       activeSquare,
       activeBoard,
       newBoard
@@ -142,7 +151,7 @@ export default class App extends Component {
       let state = {
         activeBoard: newBoardId,
         activeSquare: equivalentSquare,
-        playerCoords: helpers.getSquareCoords(newBoardId, equivalentSquare),
+        playerCoords: h.getSquareCoords(newBoardId, equivalentSquare),
         lastPlayerCoords: lastPlayerCoords
       };
 
@@ -159,7 +168,7 @@ export default class App extends Component {
     const {activeSquare} = this.state;
 
     let state = {
-      playerCoords: helpers.getCoordsFromSquarePositionRelativeToBoard(
+      playerCoords: h.getCoordsFromSquarePositionRelativeToBoard(
         this.getActiveBoard().columns,
         activeSquare
       )
