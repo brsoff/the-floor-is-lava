@@ -20,21 +20,38 @@ export function modifyCoordinates(coords, direction) {
   return coords;
 };
 
-export function getEquivalentSquare(activeSquare, currentBoard, newBoard) {
+export function getEquivalentSquareOnNewBoard(activeSquare, currentBoard, newBoard) {
   const {rows, columns} = currentBoard;
-  const square = activeSquare + 1;
-  const currentRow = Math.ceil(square / rows);
-  const offsetFromRight = Math.abs((currentRow * rows) - square);
-  const currentColumn = rows - offsetFromRight;
-  const newBoardRowCount = newBoard.rows;
-  const newBoardColumnCount = newBoard.columns;
-  const rowDiff = newBoardRowCount / rows;
-  const columnDiff = newBoardColumnCount / columns;
-  const equivalentRow = Math.round(currentRow * rowDiff);
-  const equivalentColumn = Math.round(currentColumn * columnDiff);
+  const newBoardRows = newBoard.rows;
+  const newBoardColumns = newBoard.columns;
+  const square = activeSquare + 1; // account for 0 index
+  const currentRow = Math.ceil(square / columns);
+  const currentColumn = Math.abs(((currentRow * columns) - square) - columns);
+  const equivalentColumn = getEquivalentRowOrColumn(currentColumn, columns, newBoardColumns);
+  const equivalentRow = getEquivalentRowOrColumn(currentRow, rows, newBoardRows);
 
-  return ((equivalentRow * newBoardColumnCount) - 1) -
-         (newBoardColumnCount - equivalentColumn);
+  if (equivalentColumn && equivalentRow) {
+    const equivalentSquare = (equivalentRow * newBoardColumns) -
+                             ((newBoardColumns - equivalentColumn) + 1);
+    return equivalentSquare;
+  } else {
+    return null;
+  }
+}
+
+function getEquivalentRowOrColumn(current, currentCount, newCount) {
+  if (newCount < currentCount) {
+    const offset = Math.ceil((currentCount - newCount) / 2);
+
+    if ((current <= offset) || (current >= (newCount + offset))) {
+      return null;
+    } else {
+      return current - offset;
+    }
+  } else {
+    const offset = Math.ceil((newCount - currentCount) / 2);
+    return current + offset;
+  }
 }
 
 export function getNewSquareIndex(direction, board, activeSquare) {
@@ -105,9 +122,16 @@ export function getSquareCoords(boardId, squareId) {
   return getCoords(getSquare(boardId, squareId));
 }
 
-export function getSquareDimensions(boardId, squareId) {
-  const dims = getSquare(boardId, squareId).getBoundingClientRect();
-  return {height: dims.height, width: dims.width};
+export function getCoordsFromSquarePositionRelativeToBoard(columns, square) {
+  const currentRow = Math.ceil(square / columns);
+  const currentColumn = Math.abs(((currentRow * columns) - square) - columns);
+
+  const coords = {
+    left: (currentColumn * SQUARE_SIDE),
+    top: (currentRow - 1) * SQUARE_SIDE
+  };
+
+  return coords;
 }
 
 function getSquare(boardId, squareId) {
@@ -147,7 +171,7 @@ export function scrollTo(element, to, duration) {
   }, 10);
 }
 
-export function getSquareCoordsFromRowsAndColumns(rows, activeSquare) {
+export function getSquareCoordsFromRows(rows, activeSquare) {
   const square = activeSquare + 1;
   const currentRow = Math.ceil(square / rows);
   const offsetFromRight = Math.abs((currentRow * rows) - square);

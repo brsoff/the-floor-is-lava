@@ -131,31 +131,36 @@ export default class App extends Component {
 
     const newBoardId = newBoard.id;
 
-    const equivalentSquare = helpers.getEquivalentSquare(
+    const equivalentSquare = helpers.getEquivalentSquareOnNewBoard(
       activeSquare,
       activeBoard,
       newBoard
     );
 
-    let state = {
-      activeBoard: newBoardId,
-      activeSquare: equivalentSquare,
-      playerCoords: helpers.getSquareCoords(newBoardId, equivalentSquare),
-      lastPlayerCoords: lastPlayerCoords
-    };
+    if (equivalentSquare !== null) {
 
-    if (type === FALL) state.playerIsFalling = true;
-    if (type === JUMP) state.playerIsJumping = true;
+      let state = {
+        activeBoard: newBoardId,
+        activeSquare: equivalentSquare,
+        playerCoords: helpers.getSquareCoords(newBoardId, equivalentSquare),
+        lastPlayerCoords: lastPlayerCoords
+      };
 
-    this.setState(state);
+      if (type === FALL) state.playerIsFalling = true;
+      if (type === JUMP) state.playerIsJumping = true;
+
+      this.setState(state);
+    } else {
+      console.log('cant go down!');
+    }
   }
 
   stopAction = (type) => {
     const {activeSquare} = this.state;
 
     let state = {
-      playerCoords: helpers.getSquareCoordsFromRowsAndColumns(
-        this.getActiveBoard().rows,
+      playerCoords: helpers.getCoordsFromSquarePositionRelativeToBoard(
+        this.getActiveBoard().columns,
         activeSquare
       )
     };
