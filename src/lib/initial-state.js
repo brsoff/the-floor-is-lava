@@ -6,8 +6,8 @@ const initialState = {
   playerIsFalling: false,
   playerIsJumping: false,
   boards: [
-    {id: 1, columns: 12, rows: 12, falls: []},
-    {id: 2, columns: 14, rows: 14, falls: []},
+    {id: 1, columns: 15, rows: 15, falls: []},
+    {id: 2, columns: 25, rows: 9, falls: []},
     {id: 3, columns: 13, rows: 13, falls: []}
   ]
 };

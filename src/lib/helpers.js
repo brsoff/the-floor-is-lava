@@ -133,20 +133,12 @@ export function getSquareCoords(boardId, squareId) {
 
 export function getCoordsFromSquarePositionRelativeToBoard(columns, square) {
   const currentRow = Math.ceil(square / columns);
-  // let currentColumn = 0;
+  const currentColumn = Math.abs(((currentRow * columns) - square) - columns);
 
-  // if (currentRow * columns !== square) {
-    const currentColumn = Math.abs(((currentRow * columns) - square) - columns);
-  // }
-
-  const coords = {
+  return {
     left: (currentColumn - 1) * SQUARE_SIDE,
     top: (currentRow - 1) * SQUARE_SIDE
   };
-
-  console.log(coords);
-
-  return coords;
 }
 
 function getSquare(boardId, squareId) {
