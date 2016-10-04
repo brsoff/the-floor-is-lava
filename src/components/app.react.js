@@ -115,6 +115,7 @@ export default class App extends Component {
   }
 
   isOnFall = () => {
+    if (this.state.playerIsJumping) return false;
     return this.getActiveBoard().falls.indexOf(this.state.activeSquare) > -1;
   }
 

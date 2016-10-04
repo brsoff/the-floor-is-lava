@@ -17,19 +17,19 @@ export default class Player extends Component {
 
   constructor(props) {
     super(props);
-    this.fallOnMount = props.isFalling;
+    this.fallOnMount = props.isFalling || props.isOnFall;
     this.jumpOnMount = props.isJumping;
     this.state = {useLastPlayerCoords: false};
-  }
-
-  componentDidUpdate(oldProps) {
-    if (this.props.isOnFall) this.performAction(this.fall);
   }
 
   componentDidMount() {
     if (this.fallOnMount || this.jumpOnMount) {
       this.setState({useLastPlayerCoords: true});
     }
+  }
+
+  componentDidUpdate(oldProps) {
+    if (this.props.isOnFall) this.performAction(this.fall);
   }
 
   render() {
