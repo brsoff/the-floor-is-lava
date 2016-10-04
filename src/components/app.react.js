@@ -44,11 +44,9 @@ export default class App extends Component {
 
     const activeBoard = this.getActiveBoard();
     const isOnFall = this.isOnFall();
-    const isOnJump = this.isOnJump();
     const player = (
       <Player
         isOnFall={isOnFall}
-        isOnJump={isOnJump}
         isFalling={playerIsFalling}
         isJumping={playerIsJumping}
         performAction={this.performAction}
@@ -118,10 +116,6 @@ export default class App extends Component {
 
   isOnFall = () => {
     return this.getActiveBoard().falls.indexOf(this.state.activeSquare) > -1;
-  }
-
-  isOnJump = () => {
-    return this.state.activeSquare === this.getActiveBoard().jump;
   }
 
   setNewSquare = (boardId, newSquare, direction) => {
@@ -206,7 +200,6 @@ export default class App extends Component {
 
   isTransitioningToNewBoard = () => {
     return this.isOnFall() ||
-           this.isOnJump() ||
            this.state.playerIsFalling ||
            this.state.playerIsJumping;
   }

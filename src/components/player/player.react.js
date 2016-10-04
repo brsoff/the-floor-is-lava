@@ -9,7 +9,6 @@ export default class Player extends Component {
     isFalling: PropTypes.bool.isRequired,
     isJumping: PropTypes.bool.isRequired,
     isOnFall: PropTypes.bool.isRequired,
-    isOnJump: PropTypes.bool.isRequired,
     lastPlayerCoords: PropTypes.object.isRequired,
     performAction: PropTypes.func.isRequired,
     playerCoords: PropTypes.object.isRequired,
@@ -25,7 +24,6 @@ export default class Player extends Component {
 
   componentDidUpdate(oldProps) {
     if (this.props.isOnFall) this.performAction(this.fall);
-    if (this.props.isOnJump) this.performAction(this.jump);
   }
 
   componentDidMount() {
